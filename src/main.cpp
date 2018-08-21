@@ -5,12 +5,12 @@
 
 int main() {
     try {
-        WindowManager::create("Snake", 800, 600);
         Shader shader;
         Model square;
         GLfloat x;
         GLfloat y;
         
+        WindowManager::create("Snake", 800, 600);
         shader.create(RESOURCE_PATH+"shaders/default.vs", RESOURCE_PATH+"shaders/default.fs");
         loadSquare(-0.5f, -0.5f, 1.0f, square);
         Shader::setWindowRatio(WindowManager::getRatio());

@@ -1,5 +1,5 @@
 # ****************************** Makefile config ***************************** #
-.PHONY: all run debug prebuild clean mrproper
+.PHONY: all run debug clean mrproper
 .SECONDARY:
 
 
@@ -8,47 +8,36 @@ BIN=bin
 SRC=src
 OBJ=obj
 INC=include
-ENGINE_PATH=engine
 
 
 # ******************************** Build setup ******************************* #
 LIBRARIES=glfw3 glew
-CL=g++
-CLFLAGS=-L$(ENGINE_PATH)/$(BIN) -lengine \
-	$(shell pkg-config --static --libs $(LIBRARIES))
+CL=ar
+CLFLAGS=rvs
 CXX=g++
 CXXFLAGS=$(shell pkg-config --cflags $(LIBRARIES)) -Wall -Wextra -pedantic -c \
-	-g -I$(INC)/ -I$(ENGINE_PATH)/$(INC)
+	-g -I$(INC)/
 DEBUGGER=gdb
 
 
 # ********************************** Modules ********************************* #
-EXEC=$(BIN)/main
+EXEC=$(BIN)/libengine.a
 
-EXTERNAL_LIBS  = $(ENGINE_PATH)/$(BIN)/libengine.a
+MODULES  = $(OBJ)/system.o
+MODULES += $(OBJ)/shader.o
+MODULES += $(OBJ)/tools.o
+MODULES += $(OBJ)/model.o
 
-MODULES  = 
-
-HEADERS_ONLY  = 
+HEADERS_ONLY  = $(INC)/motor.hpp
 
 
 # ******************************* General rules ****************************** #
-all: prebuild $(EXEC)
-
-
-run: $(EXEC)
-	@./$<
-
-debug: $(EXEC)
-	$(DEBUGGER) ./$<
-
-prebuild:
-	@make -C $(ENGINE_PATH)
+all: $(EXEC)
 
 
 # ********************************** Linking ********************************* #
-$(BIN)/%: $(OBJ)/%.o $(MODULES) $(EXTERNAL_LIBS)
-	$(CL) -o $@ $< $(MODULES) $(CLFLAGS)
+$(BIN)/%: $(MODULES)
+	$(CL) $(CLFLAGS) -o $@ $< $(MODULES)
 
 
 # ********************************* Compiling ******************************** #
@@ -61,9 +50,7 @@ $(OBJ)/%.o: $(SRC)/%.cpp $(HEADERS_ONLY)
 
 # *********************************** Clean ********************************** #
 clean:
-	-make -C $(ENGINE_PATH) clean
 	-rm $(OBJ)/*.o
 
 mrproper: clean
-	make -C $(ENGINE_PATH) mrproper
 	-rm $(EXEC)

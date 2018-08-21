@@ -1,32 +1,6 @@
 #include <model.hpp>
 #include <cassert>
 
-/*
-class Model {
-private:
-    GLuint vertex_array_object;
-    GLuint vertex_buffer_object;
-    
-protected:
-    void bindVertexBuffer(GLuint vbo);
-    void bindVertexArray(GLuint vao);
-    GLuint generateVertexBuffer(GLfloat *vertices);
-    GLuint generateVertexArray(GLuint vbo, GLuint components_per_vertex);
-    void generate(const GLfloat *vertices, GLuint components_per_vertex);
-    
-public:
-    Model();
-    Model(const Model &model) = delete;
-    
-    Model& operator=(const Model &model) = delete;
-    void render() const;
-    
-    ~Model();
-    
-    friend void loadSquare(GLfloat x, GLfloat y, GLfloat size, Model &result);
-};
-*/
-
 GLuint Model::current_vao = 0;
 GLuint Model::current_vbo = 0;
 
