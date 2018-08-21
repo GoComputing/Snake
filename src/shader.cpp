@@ -71,13 +71,17 @@ void Shader::create(const std::string &vertex_shader_path, const std::string &fr
 }
 
 void Shader::use() const {
-    current_program = program;
-    glUseProgram(program);
+    if(current_program != program) {
+        current_program = program;
+        glUseProgram(program);
+    }
 }
 
 void Shader::unuse() const {
-    current_program = 0;
-    glUseProgram(0);
+    if(current_program != 0) {
+        current_program = 0;
+        glUseProgram(0);
+    }
 }
 
 Shader::~Shader() {
