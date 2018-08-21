@@ -17,6 +17,7 @@ namespace WindowManager {
     GLfloat getFramerate();
     void getSize(int &x, int &y);
     GLfloat getRatio();
+    bool keyPressed(int key);
     
     void destroy();
 }

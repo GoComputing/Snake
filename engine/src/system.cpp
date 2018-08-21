@@ -120,6 +120,10 @@ GLfloat WindowManager::getRatio() {
     return (GLfloat)x / (GLfloat)y;
 }
 
+bool WindowManager::keyPressed(int key) {
+    return glfwGetKey(window, key) != GLFW_RELEASE;
+}
+
 void WindowManager::destroy() {
     glfwDestroyWindow(window);
     glfwTerminate();

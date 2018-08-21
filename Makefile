@@ -27,9 +27,10 @@ EXEC=$(BIN)/main
 
 EXTERNAL_LIBS  = $(ENGINE_PATH)/$(BIN)/libengine.a
 
-MODULES  = 
+MODULES  = $(OBJ)/snake.o
+MODULES += $(OBJ)/tools.o
 
-HEADERS_ONLY  = 
+HEADERS_ONLY  = $(INC)/tools.hpp
 
 
 # ******************************* General rules ****************************** #
