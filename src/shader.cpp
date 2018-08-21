@@ -2,6 +2,7 @@
 #include <tools.hpp>
 #include <stdexcept>
 #include <cassert>
+#include <cstdarg>
 
 GLuint Shader::current_program = 0;
 
@@ -49,6 +50,13 @@ std::string Shader::programLog(GLuint program) const {
     return res;
 }
 
+void Shader::useProgram(GLuint program) const {
+    if(program != current_program) {
+        current_program = program;
+        glUseProgram(program);
+    }
+}
+
 Shader::Shader() {
     vertex_shader = 0;
     fragment_shader = 0;
@@ -70,18 +78,88 @@ void Shader::create(const std::string &vertex_shader_path, const std::string &fr
                                  ", " + fragment_shader_path + "\n" + programLog(program));
 }
 
-void Shader::use() const {
-    if(current_program != program) {
-        current_program = program;
-        glUseProgram(program);
+void Shader::setUniformVector(const std::string &name, GLenum component_type, GLuint num_components, ...) {
+    assert(component_type == GL_INT || component_type == GL_UNSIGNED_INT || component_type == GL_FLOAT);
+    assert(num_components >= 1 && num_components <= 4);
+    GLuint current = current_program;
+    GLint uniform_location;
+    va_list components;
+    use();
+    uniform_location = glGetUniformLocation(program, name.c_str());
+    if(uniform_location < 0)
+        throw std::runtime_error ("Error finding uniform location with name '" + name + "'");
+    va_start(components, num_components);
+    if(component_type == GL_INT) {
+        if(num_components == 1) {
+            GLint v1 = va_arg(components, GLint);
+            glUniform1i(uniform_location, v1);
+        } else if(num_components == 2) {
+            GLint v1 = va_arg(components, GLint);
+            GLint v2 = va_arg(components, GLint);
+            glUniform2i(uniform_location, v1, v2);
+        } else if(num_components == 3) {
+            GLint v1 = va_arg(components, GLint);
+            GLint v2 = va_arg(components, GLint);
+            GLint v3 = va_arg(components, GLint);
+            glUniform3i(uniform_location, v1, v2, v3);
+        } else {
+            GLint v1 = va_arg(components, GLint);
+            GLint v2 = va_arg(components, GLint);
+            GLint v3 = va_arg(components, GLint);
+            GLint v4 = va_arg(components, GLint);
+            glUniform4i(uniform_location, v1, v2, v3, v4);
+        }
+    } else if(component_type == GL_UNSIGNED_INT) {
+        if(num_components == 1) {
+            GLuint v1 = va_arg(components, GLuint);
+            glUniform1ui(uniform_location, v1);
+        } else if(num_components == 2) {
+            GLuint v1 = va_arg(components, GLuint);
+            GLuint v2 = va_arg(components, GLuint);
+            glUniform2ui(uniform_location, v1, v2);
+        } else if(num_components == 3) {
+            GLuint v1 = va_arg(components, GLuint);
+            GLuint v2 = va_arg(components, GLuint);
+            GLuint v3 = va_arg(components, GLuint);
+            glUniform3ui(uniform_location, v1, v2, v3);
+        } else {
+            GLuint v1 = va_arg(components, GLuint);
+            GLuint v2 = va_arg(components, GLuint);
+            GLuint v3 = va_arg(components, GLuint);
+            GLuint v4 = va_arg(components, GLuint);
+            glUniform4ui(uniform_location, v1, v2, v3, v4);
+        }
+    } else {
+        if(num_components == 1) {
+            GLfloat v1 = va_arg(components, double);
+            glUniform1f(uniform_location, v1);
+        } else if(num_components == 2) {
+            GLfloat v1 = va_arg(components, double);
+            GLfloat v2 = va_arg(components, double);
+            glUniform2f(uniform_location, v1, v2);
+        } else if(num_components == 3) {
+            GLfloat v1 = va_arg(components, double);
+            GLfloat v2 = va_arg(components, double);
+            GLfloat v3 = va_arg(components, double);
+            glUniform3f(uniform_location, v1, v2, v3);
+        } else {
+            GLfloat v1 = va_arg(components, double);
+            GLfloat v2 = va_arg(components, double);
+            GLfloat v3 = va_arg(components, double);
+            GLfloat v4 = va_arg(components, double);
+            glUniform4f(uniform_location, v1, v2, v3, v4);
+        }
     }
+    va_end(components);
+    useProgram(current);
+}
+
+void Shader::use() const {
+    useProgram(program);
 }
 
 void Shader::unuse() const {
-    if(current_program != 0) {
-        current_program = 0;
-        glUseProgram(0);
-    }
+    useProgram(0);
 }
 
 Shader::~Shader() {

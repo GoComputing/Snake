@@ -18,10 +18,13 @@ protected:
     std::string shaderLog(GLuint shader) const;
     std::string programLog(GLuint program) const;
     
+    void useProgram(GLuint program) const;
+    
 public:
     Shader();
     void create(const std::string &vertex_shader_path, const std::string &fragment_shader_path);
     
+    void setUniformVector(const std::string &name, GLenum component_type, GLuint num_components, ...);
     void use() const;
     void unuse() const;
     
