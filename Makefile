@@ -24,6 +24,8 @@ DEBUGGER=gdb
 EXEC=$(BIN)/main
 
 MODULES  = $(OBJ)/system.o
+MODULES += $(OBJ)/shader.o
+MODULES += $(OBJ)/tools.o
 
 
 # ******************************* General rules ****************************** #

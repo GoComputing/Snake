@@ -5,6 +5,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+extern std::string RESOURCE_PATH;
+
 class WindowManager {
 private:
     static constexpr int OPENGL_VERSION_MAJOR = 3;  // Default OpenGL context version major

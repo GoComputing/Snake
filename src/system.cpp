@@ -3,6 +3,8 @@
 #include <iostream>
 #include <iomanip>
 
+std::string RESOURCE_PATH = "resources/";
+
 void WindowManager::glfwErrorCallback(int error_code, const char *error_message) {
     std::cerr << "Error thrown by GLFW. Error code: " << std::hex << error_code
               << std::endl;
