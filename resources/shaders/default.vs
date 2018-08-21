@@ -3,7 +3,10 @@
 layout(location = 0) in vec2 vertex_position;
 
 uniform vec2 position;
+uniform float window_ratio;
 
 void main() {
-    gl_Position = vec4(vertex_position+position, 0.0, 1.0);
+    vec2 final_pos = vertex_position+position;
+    final_pos.y *= window_ratio;
+    gl_Position = vec4(final_pos, 0.0, 1.0);
 }

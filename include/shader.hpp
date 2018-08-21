@@ -2,10 +2,13 @@
 #define __SHADER_HPP__
 
 #include <GL/glew.h>
+#include <vector>
 #include <string>
 
 class Shader {
 private:
+    static const char *WINDOW_SIZE_NAME;
+    static std::vector<Shader*> instances;
     static GLuint current_program;
     
     GLuint vertex_shader;
@@ -23,6 +26,8 @@ protected:
 public:
     Shader();
     void create(const std::string &vertex_shader_path, const std::string &fragment_shader_path);
+    
+    static void setWindowRatio(GLfloat ratio);
     
     void setUniformVector(const std::string &name, GLenum component_type, GLuint num_components, ...);
     void use() const;

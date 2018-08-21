@@ -1,9 +1,12 @@
 #include <shader.hpp>
 #include <tools.hpp>
+#include <algorithm>
 #include <stdexcept>
 #include <cassert>
 #include <cstdarg>
 
+const char *Shader::WINDOW_SIZE_NAME = "window_ratio";
+std::vector<Shader*> Shader::instances;
 GLuint Shader::current_program = 0;
 
 GLuint Shader::loadShader(const std::string &path, GLenum type) {
@@ -61,6 +64,7 @@ Shader::Shader() {
     vertex_shader = 0;
     fragment_shader = 0;
     program = 0;
+    instances.push_back(this);
 }
 
 void Shader::create(const std::string &vertex_shader_path, const std::string &fragment_shader_path) {
@@ -76,6 +80,13 @@ void Shader::create(const std::string &vertex_shader_path, const std::string &fr
     if(status != GL_TRUE)
         throw std::runtime_error("Error linking program with shaders " + vertex_shader_path +
                                  ", " + fragment_shader_path + "\n" + programLog(program));
+}
+
+void Shader::setWindowRatio(GLfloat ratio) {
+    size_t i;
+    for(i = 0; i < instances.size(); ++i)
+        if(instances[i]->program != 0)
+            instances[i]->setUniformVector(WINDOW_SIZE_NAME, GL_FLOAT, 1, ratio);
 }
 
 void Shader::setUniformVector(const std::string &name, GLenum component_type, GLuint num_components, ...) {
@@ -163,7 +174,11 @@ void Shader::unuse() const {
 }
 
 Shader::~Shader() {
+    std::vector<Shader*>::iterator it;
     glDeleteProgram(program);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
+    it = std::find(instances.begin(), instances.end(), this);
+    assert(it != instances.end());
+    instances.erase(it);
 }

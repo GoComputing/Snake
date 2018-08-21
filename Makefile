@@ -28,6 +28,8 @@ MODULES += $(OBJ)/shader.o
 MODULES += $(OBJ)/tools.o
 MODULES += $(OBJ)/model.o
 
+HEADERS_ONLY  = $(INC)/motor.hpp
+
 
 # ******************************* General rules ****************************** #
 all: $(EXEC)
@@ -46,10 +48,10 @@ $(BIN)/%: $(OBJ)/%.o $(MODULES)
 
 
 # ********************************* Compiling ******************************** #
-$(OBJ)/%.o: $(SRC)/%.cpp $(INC)/%.hpp
+$(OBJ)/%.o: $(SRC)/%.cpp $(INC)/%.hpp $(HEADERS_ONLY)
 	$(CXX) -o $@ $< $(CXXFLAGS)
 
-$(OBJ)/%.o: $(SRC)/%.cpp
+$(OBJ)/%.o: $(SRC)/%.cpp $(HEADERS_ONLY)
 	$(CXX) -o $@ $< $(CXXFLAGS)
 
 
