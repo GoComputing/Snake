@@ -37,11 +37,11 @@ HEADERS_ONLY  = $(INC)/tools.hpp
 all: prebuild $(EXEC)
 
 
-run: $(EXEC)
-	@./$<
+run: prebuild $(EXEC)
+	@./$(EXEC)
 
-debug: $(EXEC)
-	$(DEBUGGER) ./$<
+debug: prebuild $(EXEC)
+	$(DEBUGGER) ./$(EXEC)
 
 prebuild:
 	@make -C $(ENGINE_PATH)

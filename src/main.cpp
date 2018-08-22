@@ -15,9 +15,11 @@ void drawBoard(const Snake &board, const Model &square, Shader &shader) {
             y = 2.0*i/10.0-1.0;
             if(type == SNAKE) {
                 shader.setUniformVector("position", GL_FLOAT, 2, x, y);
+                shader.setUniformVector("color", GL_FLOAT, 3, 1.0f, 1.0f, 1.0f);
                 square.render(shader);
             } else if(type == FOOD) {
                 shader.setUniformVector("position", GL_FLOAT, 2, x, y);
+                shader.setUniformVector("color", GL_FLOAT, 3, 1.0f, 0.0f, 0.0f);
                 square.render(shader);
             }
         }
@@ -37,7 +39,7 @@ int main() {
         
         WindowManager::create("Snake", 1024, 1024);
         shader.create(RESOURCE_PATH+"shaders/default.vs", RESOURCE_PATH+"shaders/default.fs");
-        loadSquare(0.0f, 0.0f, 2.0f/10, square);
+        loadSquare(0.0f, 0.0f, 1.9f/10, "", square);
         Shader::setWindowRatio(WindowManager::getRatio());
         
         last_time = glfwGetTime();
@@ -50,13 +52,13 @@ int main() {
                     snake.reset();
                     last_move = LEFT;
                 } else {
-                    if(WindowManager::keyPressed(GLFW_KEY_A))
+                    if(WindowManager::keyPressed(GLFW_KEY_A) && last_move != RIGHT)
                         move = LEFT;
-                    else if(WindowManager::keyPressed(GLFW_KEY_D))
+                    else if(WindowManager::keyPressed(GLFW_KEY_D) && last_move != LEFT)
                         move = RIGHT;
-                    else if(WindowManager::keyPressed(GLFW_KEY_W))
+                    else if(WindowManager::keyPressed(GLFW_KEY_W) && last_move != DOWN)
                         move = UP;
-                    else if(WindowManager::keyPressed(GLFW_KEY_S))
+                    else if(WindowManager::keyPressed(GLFW_KEY_S) && last_move != UP)
                         move = DOWN;
                     else
                         move = last_move;

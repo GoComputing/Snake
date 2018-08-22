@@ -27,6 +27,7 @@ MODULES  = $(OBJ)/system.o
 MODULES += $(OBJ)/shader.o
 MODULES += $(OBJ)/tools.o
 MODULES += $(OBJ)/model.o
+MODULES += $(OBJ)/texture.o
 
 HEADERS_ONLY  = $(INC)/motor.hpp
 
