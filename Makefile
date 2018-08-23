@@ -29,19 +29,22 @@ EXTERNAL_LIBS  = $(ENGINE_PATH)/$(BIN)/libengine.a
 
 MODULES  = $(OBJ)/snake.o
 MODULES += $(OBJ)/tools.o
+MODULES += $(OBJ)/snake_ai.o
 
 HEADERS_ONLY  = $(INC)/tools.hpp
 
 
 # ******************************* General rules ****************************** #
+PARAMS=ai
+
 all: prebuild $(EXEC)
 
 
 run: prebuild $(EXEC)
-	@./$(EXEC)
+	./$(EXEC) $(PARAMS)
 
 debug: prebuild $(EXEC)
-	$(DEBUGGER) ./$(EXEC)
+	$(DEBUGGER) --args ./$(EXEC) $(HUMAN)
 
 prebuild:
 	@make -C $(ENGINE_PATH)

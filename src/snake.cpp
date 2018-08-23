@@ -1,6 +1,7 @@
 #include <cassert>
 #include <snake.hpp>
 #include <tools.hpp>
+#include <stdexcept>
 
 void Snake::initCells(int size_x, int size_y) {
     PosSnake posSnake;
@@ -35,6 +36,12 @@ void Snake::putFood() {
         yPosScore = UniformInt(0, cells[0].size());
     } while(cells[yPosScore][xPosScore] != EMPTY);
     cells[yPosScore][xPosScore] = FOOD;
+    objective_x = xPosScore;
+    objective_y = yPosScore;
+}
+
+Snake::Snake() {
+    endFlag = true;
 }
 
 Snake::Snake(int size_x, int size_y) {
@@ -44,6 +51,39 @@ Snake::Snake(int size_x, int size_y) {
 CellType Snake::getCell(int x, int y) const {
     assert((int)cells.size() > 0 && y < (int)cells.size() && x < (int)cells[0].size());
     return cells[y][x];
+}
+
+int Snake::getSizeX() const {
+    if(cells.size() == 0)
+        return 0;
+    else
+        return cells[0].size();
+}
+
+int Snake::getSizeY() const {
+    return cells.size();
+}
+
+int Snake::getSnakePosX() const {
+    assert(snake.size() > 0);
+    return snake.front().x;
+}
+
+int Snake::getSnakePosY() const {
+    assert(snake.size() > 0);
+    return snake.front().y;
+}
+
+int Snake::getObjectivePosX() const {
+    return objective_x;
+}
+
+int Snake::getObjectivePosY() const {
+    return objective_y;
+}
+
+int Snake::getSnakeSize() const {
+    return snake.size();
 }
 
 void Snake::update(Move move) {
@@ -57,6 +97,9 @@ void Snake::update(Move move) {
         case DOWN:  pos.y -= 1; break;
         case LEFT:  pos.x -= 1; break;
         case RIGHT: pos.x += 1; break;
+        case NONE:
+        default:
+            throw std::runtime_error ("Invalid move");
         }
         // TO-DO
         endFlag = !inRange(pos.y, 0, (int)cells.size()-1) || !inRange(pos.x, 0, (int)cells[0].size()-1);
@@ -88,4 +131,15 @@ void Snake::reset() {
 
 void Snake::reset(int new_size_x, int new_size_y) {
     initCells(new_size_x, new_size_y);
+}
+
+std::ostream& operator<<(std::ostream &os, Move move) {
+    switch(move) {
+    case LEFT:  os << "Left";  break;
+    case RIGHT: os << "Right"; break;
+    case UP:    os << "Up";    break;
+    case DOWN:  os << "Down";  break;
+    case NONE:  os << "None";  break;
+    }
+    return os;
 }
