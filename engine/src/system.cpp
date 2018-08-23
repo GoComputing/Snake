@@ -52,6 +52,8 @@ static void createGLFW_Window(const std::string &title, int width, int height) {
 static void setDefaultState() {
     glClearColor(BACKGROUND_R, BACKGROUND_G, BACKGROUND_B, 1.0f);
     glfwSwapInterval(1);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 static void setGLFW_Callbacks() {

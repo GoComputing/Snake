@@ -32,6 +32,7 @@ struct Bmp {
     uint16_t bits_per_pixel;
     std::string data;
     
+    void transformARGB_RGBA();
     void extractData(const std::string &path);
     void getFormat(GLint &internal_format, GLint &format);
     const char* dataPtr();

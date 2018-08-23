@@ -86,7 +86,6 @@ void SnakeAI::generatePlan(const Snake &board) {
             state_objective = state_objective->previus;
         }
     }
-    std::cout << created.size() << std::endl;
     while(created.size() > 0) {
         delete created.front();
         created.pop();

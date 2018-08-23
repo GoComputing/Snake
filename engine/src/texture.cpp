@@ -1,6 +1,8 @@
 #include <texture.hpp>
 #include <tools.hpp>
 #include <cstdint>
+#include <cassert>
+#include <algorithm>
 
 // BM
 #define BMP_CHECK           0x4D42
@@ -10,6 +12,13 @@ GLuint Texture::current_texture = 0;
 
 #include <iostream>
 #include <iomanip>
+
+void Bmp::transformARGB_RGBA() {
+    assert(bits_per_pixel == 32);
+    int i;
+    for(i = 0; i < (int)width*height; ++i)
+        std::swap(data[pos_data+4*i+0], data[pos_data+4*i+3]);
+}
 
 void Bmp::extractData(const std::string &path) {
     uint32_t data_size;
@@ -29,6 +38,8 @@ void Bmp::extractData(const std::string &path) {
         throw std::runtime_error ("Not enought data in BMP at " + path);
     if(bits_per_pixel != 24 && bits_per_pixel != 32)
         throw std::runtime_error ("Not valid pixel size in BMP at " + path);
+    if(bits_per_pixel == 32)
+        transformARGB_RGBA();
 }
 
 const char* Bmp::dataPtr() {
@@ -41,7 +52,7 @@ void Bmp::getFormat(GLint &internal_format, GLint &format) {
         format = GL_BGR;
     } else {
         internal_format = GL_RGBA;
-        format = GL_BGRA;
+        format = GL_RGBA;
     }
 }
 

@@ -44,11 +44,11 @@ int main(int argc, char **argv) {
     srand(time(NULL));
     
     try {
-        Snake snake = Snake(100, 100);
+        Snake snake = Snake(6, 6);
         Shader shader;
         Model snake_model;
         Model food_model;
-        GLfloat interval = 0.001f;
+        GLfloat interval = 0.2f;
         GLfloat last_time;
         GLfloat current_time;
         Move last_move = LEFT;
