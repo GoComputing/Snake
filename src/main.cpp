@@ -48,12 +48,13 @@ int main(int argc, char **argv) {
         Shader shader;
         Model snake_model;
         Model food_model;
-        GLfloat interval = 0.2f;
+        GLfloat interval = 0.1f;
         GLfloat last_time;
         GLfloat current_time;
         Move last_move = LEFT;
         Move move;
         SnakeAI snake_ai;
+        int max_score = 0;
         
         WindowManager::create("Snake", 1024, 1024);
         shader.create(RESOURCE_PATH+"shaders/default.vs", RESOURCE_PATH+"shaders/default.fs");
@@ -88,7 +89,10 @@ int main(int argc, char **argv) {
                         move = snake_ai.nextMove(snake);
                     }
                     if(move == NONE) {
-                        std::cout << "Nooooooo" << std::endl;
+                        if(snake.getSnakeSize() > max_score) {
+                            max_score = snake.getSnakeSize();
+                            std::cout << "Reached a record: " << max_score << std::endl;
+                        }
                         snake.reset();
                         last_move = LEFT;
                         snake_ai.reset();

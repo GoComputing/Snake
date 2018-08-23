@@ -24,20 +24,26 @@ void Snake::initCells(int size_x, int size_y) {
         snake.push_back(posSnake);
     }
     // Positioning objective
-    putFood();
     endFlag = false;
+    putFood();
 }
 
 void Snake::putFood() {
-    int xPosScore;
-    int yPosScore;
-    do {
-        xPosScore = UniformInt(0, cells.size());
-        yPosScore = UniformInt(0, cells[0].size());
-    } while(cells[yPosScore][xPosScore] != EMPTY);
-    cells[yPosScore][xPosScore] = FOOD;
-    objective_x = xPosScore;
-    objective_y = yPosScore;
+    std::vector<std::pair<int, int>> empty_positions;
+    int i, j;
+    for(i = 0; i < getSizeY(); ++i)
+        for(j = 0; j < getSizeX(); ++j)
+            if(cells[i][j] == EMPTY)
+                empty_positions.push_back(std::make_pair(i, j));
+    if(empty_positions.size() == 0) {
+        objective_x = -1;
+        objective_y = -1;
+    } else {
+        int id = UniformInt(0, empty_positions.size());
+        objective_x = empty_positions[id].second;
+        objective_y = empty_positions[id].first;
+        cells[objective_y][objective_x] = FOOD;
+    }
 }
 
 Snake::Snake() {

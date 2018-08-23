@@ -10,7 +10,10 @@ out vec2 uv;
 
 void main() {
     vec2 final_pos = vertex_position+position;
-    final_pos.y *= window_ratio;
+    if(window_ratio >= 1.0)
+        final_pos.x /= window_ratio;
+    else
+        final_pos.y *= window_ratio;
     gl_Position = vec4(final_pos, 0.0, 1.0);
     uv = texcoords;
 }

@@ -2,20 +2,6 @@
 #include <tools.hpp>
 #include <queue>
 
-/*
-class SnakeAI {
-private:
-    std::vector<Move> plan;
-    
-protected:
-    void generatePlan(const Snake &board);
-    
-public:
-    void reset();
-    Move nextMove(const Snake &board);
-};
-*/
-
 struct State {
     Snake board;
     Move move;

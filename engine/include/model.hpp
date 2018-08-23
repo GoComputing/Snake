@@ -46,7 +46,7 @@ public:
      * @brief Loads a square, which could be textured
      * @param x: x bottom left corner of the square
      * @param y: y bottom left corner of the square
-     * @param size: size of the square. 2.0 is equal to screen width
+     * @param size: size of the square. It is relative to shader configuration
      * @param texture_path: Path to a BMP image. If path is empty, texture will not be loaded
      * @return result: Model which represents the (textured) square model
      */
